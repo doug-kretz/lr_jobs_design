@@ -35,11 +35,19 @@ JobProcessor
     (should implment a retry given what the error message is)
 
     Reads CANCEL messages
-    Submit CANCEl TO SDK   
+    Submit CANCEl TO SDK 
+    on SUCCESS:
+       update Job status to CANCELLED
+       LOG
+       update JOB within DB
+    on FAILURE:
+        LOG
+       if SDK / Communication error: retry after sometime
+       otherwise 
 
 CancelJob
     Reads CANCEL messages
     Sets Job state to CANCELLING
-    submit to DB
+    update JOB within DB
 
     
