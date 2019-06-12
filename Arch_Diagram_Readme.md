@@ -2,6 +2,7 @@ Overall Design:
   Each component reads from a message queue, performs some work and writes back.
   Components should only be concerned with messages for them and ignore others.
   Each component will Log when a message is recieved,  Job state changes, and message sent.
+  We keep the DB as a single source of truth in case there are failures, outages, etc.
 
 JOB STATES
         CREATING - job has been created but has not been submitted for processing
@@ -20,6 +21,7 @@ MESSAGE TYPES
 Job API:
    create - construct CREATE message
    cancel - construct CANCEL message, pass JobID
+   status - construct STATUS message
 
 CreateJob
     Reads CREATE message type
@@ -36,6 +38,7 @@ JobScheduler Interface
     otherwise log error message
       -(should implment a retry given what the error message is)
     Update job in DB  
+    Write to Message Queue
 
     Reads CANCEL messages
     Submit CANCEl TO SDK 
@@ -43,6 +46,7 @@ JobScheduler Interface
        update Job status to CANCELLED
        LOG
        update JOB within DB
+       Write to Message Queue
     on FAILURE:
         LOG
        if SDK / Communication error: retry after sometime
@@ -61,5 +65,5 @@ GetJobs
     Payload Options
         ALL - get all jobs 
         TimeFrame- get jobs within set time
-        JobState - filter jobs by state ( only COMPLETE, SCHEDULED, etc. etc.)
+        JobState - filter jobs by state (  COMPLETED, SCHEDULED, etc. etc.)
         
