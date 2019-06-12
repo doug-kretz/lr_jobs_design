@@ -6,11 +6,14 @@
 
 #Packages to Consider
     Maven - package handling
+    Guice - Dependency Injection
     Hibernate - DB access
     Jackson for JSON parsing
     Log4j - Logging
     RabbitMQ - message pipelines
     Jersey - REST library
+
+    `Note: This was based on familiarty. I didn't have time to consider different packages`
 
 #JOB STATES
         CREATING - job has been created but has not been submitted for processing
@@ -93,4 +96,3 @@
         User Validation
         Prevent overload of REST endpoint with IP whitelist ( only allow clients who bought software )
         Check messages haven't been corrupted 
-    
