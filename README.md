@@ -14,8 +14,12 @@ Requiremnts:
 
 Considerations:
     How to handle long running jobs?
+        - Client is in charge of cancelling jobs
     Thread Safety
+        - For multiple users we will need to ensure DB read/write locks
     How do we update job list?
+        -repoll
+        
 
 
 
@@ -24,8 +28,7 @@ Design Overview:
      Will be in charge of all processing. 
      Have REST API for job creation and stopping
         - Use an event-based message system for job processing
-        - Seperate concerns for fault tolerant failing and scaling
-        - 
+        - Seperate concerns for fault tolerance and scaling
     Frontend
         Send jobs to backend
         Display status of jobs
