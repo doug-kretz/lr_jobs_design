@@ -9,11 +9,13 @@ JOB STATES
         RUNNING  - Job is currently running
         COMPLETED - Job has finished
         CANCELLING - Job is scheduled to be cancelled but has not been submitted to SDK
+        CANCELLED - Job has been cancelled by user
 
 MESSAGE TYPES
     CREATE - create a new job
     SCHEDULE - schedule job
     CANCEL - cancle a currently running job
+    STATUS - get status of ALL or one job
 
 Job API:
    create - construct CREATE message
@@ -27,16 +29,17 @@ CreateJob
     Submits Job to database
     Writes to Message Queue. 
 
-JobProcessor
+JobScheduler Interface
     Reads SCHEDULE messages
     Submit job to SDK interface.
-    If successful update Job State to SCHEDULED / RUNNING and update job in DB
+    If successful update Job State to SCHEDULED for scheduled jobs or RUNNING 
     otherwise log error message
-    (should implment a retry given what the error message is)
+      -(should implment a retry given what the error message is)
+    Update job in DB  
 
     Reads CANCEL messages
     Submit CANCEl TO SDK 
-    on SUCCESS:
+    on SUCCESS
        update Job status to CANCELLED
        LOG
        update JOB within DB
@@ -50,4 +53,13 @@ CancelJob
     Sets Job state to CANCELLING
     update JOB within DB
 
-    
+Jobs SDK 
+    - Upon submitting a job, returns a the Job's New State or ERROR
+
+GetJobs
+    Reads STATUS message
+    Payload Options
+        ALL - get all jobs 
+        TimeFrame- get jobs within set time
+        JobState - filter jobs by state ( only COMPLETE, SCHEDULED, etc. etc.)
+        
